@@ -1,24 +1,63 @@
-# README
+## users
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+| Column                     | Type    | Options     |
+|----------------------------|---------|-------------|
+| nickname                   | string  | null: false |
+| email                      | string  | null: false |
+| encrypted_password         | string  | null: false |
+| encrypted_password_confirm | string  | null: false |
+| user_name                  | string  | null: false |
+| user_name_kana             | string  | null: false |
+| birthday_year              | integer | null: false |
+| birthday_month             | integer | null: false |
+| birthday_date              | integer | null: false |
 
-Things you may want to cover:
+### Association
+has_many :items
+has_many :purchases
 
-* Ruby version
 
-* System dependencies
+## items
+| Column                    | Type       | Options     |
+|---------------------------|------------|-------------|
+| image                     |            |             |
+| item_name                 | string     | null: false |
+| explanation               | text       | null: false |
+| category                  | string     | null: false |
+| condition                 | string     | null: false |
+| shipping_cost_responsible | string     | null: false |
+| shipping_from             | string     | null: false |
+| shipping_date             | string     | null: false |
+| price                     | integer    | null: false |
+| user_id                   | references | foreign_key: true |
 
-* Configuration
+### Association
+belongs_to :user
+belongs_to :purchase
 
-* Database creation
 
-* Database initialization
+## purchases
+| Column  | Type       | Options           |
+|---------|------------|-------------------|
+| user_id | references | foreign_key: true |
+| item_id | references | foreign_key: true |
 
-* How to run the test suite
+### Association
+has_one :item
+has_one :destination
+belongs_to :user
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+## destinations
+| Column       | Type       | Options           |
+|--------------|------------|-------------------|
+| postcode     | string     | null: false       |
+| prefecture   | string     | null: false       |
+| city         | string     | null: false       |
+| block        | string     | null: false       |
+| building     | string     |                   |
+| phone_number | integer    | null: false       |
+| purchase_id  | references | foreign_key: true |
 
-* ...
+### Association
+belongs_to :purchase
