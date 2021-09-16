@@ -1,16 +1,15 @@
 ## users
 
-| Column                     | Type    | Options     |
-|----------------------------|---------|-------------|
-| nickname                   | string  | null: false |
-| email                      | string  | null: false |
-| encrypted_password         | string  | null: false |
-| encrypted_password_confirm | string  | null: false |
-| user_name                  | string  | null: false |
-| user_name_kana             | string  | null: false |
-| birthday_year              | integer | null: false |
-| birthday_month             | integer | null: false |
-| birthday_date              | integer | null: false |
+| Column                     | Type   | Options                   |
+|----------------------------|--------|------- -------------------|
+| nickname                   | string | null: false               |
+| email                      | string | null: false, unique: true |
+| encrypted_password         | string | null: false               |
+| user_last_name             | string | null: false               |
+| user_first_name            | string | null: false               |
+| user_last_name_kana        | string | null: false               |
+| user_first_name_kana       | string | null: false               |
+| birthday                   | date   | null: false               |
 
 ### Association
 has_many :items
@@ -18,32 +17,31 @@ has_many :purchases
 
 
 ## items
-| Column                    | Type       | Options     |
-|---------------------------|------------|-------------|
-| image                     |            |             |
-| item_name                 | string     | null: false |
-| explanation               | text       | null: false |
-| category                  | string     | null: false |
-| condition                 | string     | null: false |
-| shipping_cost_responsible | string     | null: false |
-| shipping_from             | string     | null: false |
-| shipping_date             | string     | null: false |
-| price                     | integer    | null: false |
-| user_id                   | references | foreign_key: true |
+| Column                       | Type       | Options           |
+|------------------------------|------------|-------------------|
+| item_name                    | string     | null: false       |
+| explanation                  | text       | null: false       |
+| category_id                  | integer    | null: false       |
+| condition_id                 | integer    | null: false       |
+| shipping_cost_responsible_id | integer    | null: false       |
+| shipping_from_id             | integer    | null: false       |
+| shipping_date_id             | integer    | null: false       |
+| price                        | integer    | null: false       |
+| user                         | references | foreign_key: true |
 
 ### Association
 belongs_to :user
-belongs_to :purchase
+has_one :purchase
 
 
 ## purchases
-| Column  | Type       | Options           |
-|---------|------------|-------------------|
-| user_id | references | foreign_key: true |
-| item_id | references | foreign_key: true |
+| Column | Type       | Options           |
+|--------|------------|-------------------|
+| user   | references | foreign_key: true |
+| item   | references | foreign_key: true |
 
 ### Association
-has_one :item
+belongs_to :item
 has_one :destination
 belongs_to :user
 
@@ -56,8 +54,8 @@ belongs_to :user
 | city         | string     | null: false       |
 | block        | string     | null: false       |
 | building     | string     |                   |
-| phone_number | integer    | null: false       |
-| purchase_id  | references | foreign_key: true |
+| phone_number | string     | null: false       |
+| purchase     | references | foreign_key: true |
 
 ### Association
 belongs_to :purchase
