@@ -1,8 +1,7 @@
 class ItemsController < ApplicationController
-  def index
+  before_action :authenticate_user!, only: [:new]
+  def new
   end
 
-  def destroy
-  end
 
 end
