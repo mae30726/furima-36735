@@ -1,7 +1,7 @@
 class PurchasesController < ApplicationController
+  before_action :set_item, only: :index
 
   def index
-    @item = Item.find(params[:item_id])
     @purchase_destination = PurchaseDestination.new
   end
 
@@ -12,14 +12,18 @@ class PurchasesController < ApplicationController
       @purchase_destination.save
       redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
+      set_item
       render :index
     end
   end
 
   private
-  def purchase_params
+  def set_item
     @item = Item.find(params[:item_id])
+  end
+
+  def purchase_params
+    set_item
     params.require(:purchase_destination).permit(:postcode, :prefecture_id, :city, :block, :building, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token], price: @item.price)
   end
 
