@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :move_to_index, except: [:new, :create, :index, :show]
+  before_action :no_item, only: :edit
 
   def new
     @item = Item.new
@@ -24,9 +25,6 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    if @item.purchase.present?
-      redirect_to root_path
-    end
   end
 
   def update
@@ -57,5 +55,11 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def no_item
+    if @item.purchase.present?
+      redirect_to root_path
+    end
   end
 end

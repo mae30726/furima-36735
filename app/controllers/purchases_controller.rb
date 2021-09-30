@@ -1,5 +1,7 @@
 class PurchasesController < ApplicationController
+  before_action :authenticate_user!, only: :index
   before_action :set_item, only: :index
+  before_action :cannot_buy, only: :index
 
   def index
     @purchase_destination = PurchaseDestination.new
@@ -34,5 +36,12 @@ class PurchasesController < ApplicationController
         card: purchase_params[:token],
         currency: 'jpy'
       )
+  end
+
+  def cannot_buy
+    set_item
+    if current_user.id == @item.user_id || @item.purchase.present?
+      redirect_to root_path
+    end
   end
 end
