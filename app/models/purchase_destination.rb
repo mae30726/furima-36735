@@ -1,6 +1,6 @@
 class PurchaseDestination
   include ActiveModel::Model
-  attr_accessor :postcode, :prefecture_id, :city, :block, :building, :phone_number, :item_id, :user_id
+  attr_accessor :postcode, :prefecture_id, :city, :block, :building, :phone_number, :item_id, :user_id, :token, :price
 
   with_options presence: true do
     validates :user_id
@@ -10,6 +10,8 @@ class PurchaseDestination
     validates :city
     validates :block
     validates :phone_number, format: { with: /\A\d{10,11}\z/ }
+    validates :price
+    validates :token
   end
   
 

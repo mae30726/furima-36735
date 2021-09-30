@@ -8,7 +8,7 @@ RSpec.describe PurchaseDestination, type: :model do
 
   describe "商品決済機能" do
     context "商品決済ができる場合" do
-      it "全ての項目が正しく入力されていれば登録できる" do
+      it "全ての項目が正しく入力されていれば登録できる(price,token含む)" do
         expect(@purchase_destination).to be_valid
       end
       it "建物名は空でも登録できる" do
@@ -18,6 +18,16 @@ RSpec.describe PurchaseDestination, type: :model do
     end
 
     context "商品決済ができない場合" do
+      it "tokenが空では登録できない" do
+        @purchase_destination.token = ""
+        @purchase_destination.valid?
+        expect(@purchase_destination.errors.full_messages).to include("Token can't be blank")
+      end
+      it "priceが空では登録できない" do
+        @purchase_destination.price = ""
+        @purchase_destination.valid?
+        expect(@purchase_destination.errors.full_messages).to include("Price can't be blank")
+      end
       # it "クレジットカード情報が空だと登録できない" do
       #   @purchase_destination.token = nil
       #   @purchase_destination.valid?
