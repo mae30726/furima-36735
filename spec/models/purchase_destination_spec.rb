@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe PurchaseDestination, type: :model do
   before do
     item = FactoryBot.create(:item)
-    @purchase_destination = FactoryBot.build(:purchase_destination, user_id: item.user.id, item_id: item.id)
+    user = FactoryBot.create(:user)
+    @purchase_destination = FactoryBot.build(:purchase_destination, user_id: user.id, item_id: item.id)
   end
 
   describe "商品決済機能" do
@@ -28,11 +29,6 @@ RSpec.describe PurchaseDestination, type: :model do
         @purchase_destination.valid?
         expect(@purchase_destination.errors.full_messages).to include("Price can't be blank")
       end
-      # it "クレジットカード情報が空だと登録できない" do
-      #   @purchase_destination.token = nil
-      #   @purchase_destination.valid?
-      #   expect(@purchase_destination.errors.full_messages).to include("Token can't be blank")
-      # end
       it "郵便番号が空だと登録できない" do
         @purchase_destination.postcode = ""
         @purchase_destination.valid?
@@ -49,7 +45,7 @@ RSpec.describe PurchaseDestination, type: :model do
         expect(@purchase_destination.errors.full_messages).to include("Postcode is invalid. Include hyphen(-)")
       end
       it "都道府県が初期値のままだと登録できない" do
-        @purchase_destination.prefecture_id = "0"
+        @purchase_destination.prefecture_id = 0
         @purchase_destination.valid?
         expect(@purchase_destination.errors.full_messages).to include("Prefecture can't be blank")
       end
